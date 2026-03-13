@@ -1,0 +1,199 @@
+
+body{
+    background-color: #ffffff;
+
+}
+.container{
+  background-color: #f8f8f8;
+    width:1024px;
+    font-family: Arial, sans-serif;
+    
+    h1 {
+        color: #333;
+    }
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 42px;
+
+    .brand{
+        margin-top:10px;
+        h1{
+        font-family: 'Montserrat', sans-serif;
+        font-size: 25px;
+        font-weight: lighter;
+        color:#333;
+        }
+    }
+
+    nav{
+        display: flex;
+        gap: 20px;
+
+        a{
+            text-decoration: none;
+            color:#6a6b71;
+            font-size: 16px;
+            transition: color 0.3s ease;
+
+            &:hover{
+                color:#666;
+            }
+        }
+        i{color:#6a6b71}
+    }
+    .active{
+        color:#1c1e1d;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+}
+
+.showcase{
+    margin-left:42px;
+    margin-right:42px;
+    background-image: url("/images/showcase.png");
+    background-size: cover;
+    background-position: center;        
+    height: 455px;
+    width: 940px;
+    border-radius:3px;
+    color:#fefefe;
+
+    padding-top:140px;
+    padding-left:50px;
+    z-index: 6;
+        h1{
+            font-size: 48px;
+    
+            font-family: 'Cormorant Garamond';
+            color:#f8f8f8;
+            text-align: left;
+        }
+
+        p{
+            color:#f8f8f8;
+            font-size: 16px;
+            font-family: 'Cormorant Garamond';
+            text-align: left;
+            width:250px;
+        }
+        
+        .btn{
+            height:55px;
+            width:160px;
+            display: inline-block;
+            padding-top: 15px;
+            background-color: #1f1f1e;
+            color: #f8f8f8;
+            text-decoration: none;
+            border-radius: 10px;
+            margin-top: 20px;
+            z-index: 5;
+        }
+        .btn:hover{
+            background-color: #333;
+        }
+ 
+}
+
+.filter{
+    display: flex;
+    justify-content: space-between;
+    margin-left:60px;
+    font-family: 'Montserrat';
+    font-size: 18px;
+    color: #40434b;
+
+    .categories{
+        .filter-toggle{
+            margin-top:25px;
+            height:50px;
+            width:100px;
+            border-radius: 5px;
+            border:none;
+            background-color: #fefefe;
+            text-decoration: none;
+                box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.08),
+        0 8px 20px rgba(0, 0, 0, 0.10);
+        }
+        display: flex;
+        gap: 30px;
+        .filterbtn{       
+            background-color: transparent;
+            text-decoration: none;
+            border:none; 
+        }
+        .btn:hover{
+            background-color: #333;
+            color:gold;
+        }
+        .activefilterbtn{
+                text-decoration: underline;    
+            }
+    }
+
+    .filter-magic-stars{
+
+        img{
+            width: 150px;
+        }
+    }
+}
+
+.products{
+    display: grid;
+    grid-template-columns: 512px 512px;
+    grid-template-rows: 350px 350px;
+    justify-content: space-evenly;
+    border: 10 px solid black;
+    padding-bottom:50px;
+
+    .product-card{
+        width: 512px;
+        height: 350px;
+        padding:20px;
+
+        img{
+            width:440px;
+            border-radius: 3px;
+        }
+
+        h2{
+            font-size: 18px;
+            margin-top: 15px;
+            color:#333;
+        }
+
+        p{
+            font-size: 16px;
+            color:#666;
+            margin-top:10px;
+            margin-right:40px;
+        }
+    }
+
+    .product-information{
+        padding-top:5px;
+        display:flex;
+        justify-content: space-between;
+        flex-direction: horizontal;
+        p{
+            margin-top:14px;
+        }
+    }
+}
+
+.footer{
+    background-color: #f8f8f8;
+    color: #837f7f;
+    text-align: center;
+    padding: 20px 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+        
