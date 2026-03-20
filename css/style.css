@@ -37,14 +37,17 @@ body {
   transition: color 0.3s ease;
 }
 .header nav a:hover {
-  color: #666;
+  color: #1c1e1d;
+  font-weight: bold;
 }
 .header nav i {
   color: #6a6b71;
 }
+.header nav i:hover {
+  color: #1c1e1d;
+}
 .header .active {
   color: #1c1e1d;
-  text-decoration: underline;
   font-weight: bold;
 }
 
@@ -99,6 +102,10 @@ body {
   font-size: 18px;
   color: #40434b;
 }
+.filter .categories {
+  display: flex;
+  gap: 30px;
+}
 .filter .categories .filter-toggle {
   margin-top: 25px;
   height: 50px;
@@ -107,64 +114,47 @@ body {
   border: none;
   background-color: #fefefe;
   text-decoration: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08), 0 8px 20px rgba(0, 0, 0, 0.1);
 }
-.filter .categories {
-  display: flex;
-  gap: 30px;
+.filter .categories .filter-toggle:hover {
+  border: 2px solid #449f7f;
+}
+.filter .categories .filter-toggle {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08), 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 .filter .categories .filterbtn {
   background-color: transparent;
-  text-decoration: none;
+  -webkit-text-decoration: under;
+          text-decoration: under;
   border: none;
 }
-.filter .categories .btn:hover {
-  background-color: #333;
-  color: gold;
+.filter .categories .filterbtn:hover {
+  font-weight: bold;
 }
 .filter .categories .activefilterbtn {
-  text-decoration: underline;
+  font-weight: bold;
 }
 .filter .filter-magic-stars img {
   width: 150px;
 }
 
-.products {
-  display: grid;
-  grid-template-columns: 512px 512px;
-  grid-template-rows: 350px 350px;
-  justify-content: space-evenly;
-  border: 10 px solid black;
-  padding-bottom: 50px;
+.product .img-container {
+  width: 100%;
+  text-align: center;
 }
-.products .product-card {
-  width: 512px;
-  height: 350px;
-  padding: 20px;
-}
-.products .product-card img {
-  width: 440px;
+.product img {
+  height: 200px;
   border-radius: 3px;
 }
-.products .product-card h2 {
+.product h2 {
   font-size: 18px;
   margin-top: 15px;
   color: #333;
 }
-.products .product-card p {
+.product p {
   font-size: 16px;
   color: #666;
   margin-top: 10px;
   margin-right: 40px;
-}
-.products .product-information {
-  padding-top: 5px;
-  display: flex;
-  justify-content: space-between;
-  flex-direction: horizontal;
-}
-.products .product-information p {
-  margin-top: 14px;
 }
 
 .footer {

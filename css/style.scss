@@ -40,14 +40,22 @@ body{
             transition: color 0.3s ease;
 
             &:hover{
-                color:#666;
+                color:#1c1e1d;
+                        font-weight: bold;
+
             }
         }
-        i{color:#6a6b71}
+        i{
+            color:#6a6b71;
+            &:hover{
+                color:#1c1e1d;
+
+
+            }
+        }
     }
     .active{
         color:#1c1e1d;
-        text-decoration: underline;
         font-weight: bold;
     }
 }
@@ -109,6 +117,8 @@ body{
     color: #40434b;
 
     .categories{
+        display: flex;
+        gap: 30px;
         .filter-toggle{
             margin-top:25px;
             height:50px;
@@ -116,24 +126,29 @@ body{
             border-radius: 5px;
             border:none;
             background-color: #fefefe;
+            
             text-decoration: none;
-                box-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.08),
-        0 8px 20px rgba(0, 0, 0, 0.10);
+            &:hover{
+            border: 2px solid #449f7f;  
+            }
+            box-shadow:
+            0 2px 4px rgba(0, 0, 0, 0.08),
+            0 8px 20px rgba(0, 0, 0, 0.10);
+            
+            
         }
-        display: flex;
-        gap: 30px;
+        
         .filterbtn{       
             background-color: transparent;
-            text-decoration: none;
+            text-decoration: under;
             border:none; 
+            &:hover{
+            font-weight: bold;
         }
-        .btn:hover{
-            background-color: #333;
-            color:gold;
         }
+
         .activefilterbtn{
-                text-decoration: underline;    
+                font-weight: bold;    
             }
     }
 
@@ -145,21 +160,13 @@ body{
     }
 }
 
-.products{
-    display: grid;
-    grid-template-columns: 512px 512px;
-    grid-template-rows: 350px 350px;
-    justify-content: space-evenly;
-    border: 10 px solid black;
-    padding-bottom:50px;
-
-    .product-card{
-        width: 512px;
-        height: 350px;
-        padding:20px;
-
+    .product{
+        .img-container{
+            width: 100%;
+            text-align: center; 
+        }
         img{
-            width:440px;
+            height: 200px;
             border-radius: 3px;
         }
 
@@ -177,16 +184,8 @@ body{
         }
     }
 
-    .product-information{
-        padding-top:5px;
-        display:flex;
-        justify-content: space-between;
-        flex-direction: horizontal;
-        p{
-            margin-top:14px;
-        }
-    }
-}
+
+
 
 .footer{
     background-color: #f8f8f8;
