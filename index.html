@@ -3,121 +3,264 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hello World</title>
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous"> 
-   <link rel="stylesheet" href="css/style.css" />
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous" defer></script>
+    <title>Brandname</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+      defer
+    ></script>
     <script src="main.js" defer></script>
   </head>
   <body>
-    <div class="container">
+    <div class="container flex-column">
       <!-- Header-->
       <div class="header container-fluid">
         <div class="brand">
-         <h1>BRANDNAME</h1>
+          <h1>BRANDNAME</h1>
         </div>
         <nav>
-            <a href="#" class="active">Home</a>
-            <a href="#">Shop</a>
-            <a href="#">Contact</a>
-            <a href="#"><i class="fa-solid fa-magnifying-glass"></i></a>
-            <a href="#"><i class="fa-regular fa-user"></i></a>
-            <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+          <a id="cartMenu" data-bs-toggle="modal" data-bs-target="#cartModal"
+            ><i class="fa-solid fa-cart-shopping"></i
+          ></a>
         </nav>
-      </div> 
-      <!-- Showcase --> 
-    <div class="showcase container-fluid">
-        <h1>Step into Style</h1>
-        <p>Explore our exclusive collection of premium shoes.</p>
-    
-        <a href="#" class="btn">Shop Now</a>
-    </div>
-    <!-- Filter and  -->
-    <div class="filter">
-        <div class="categories">
-            <button class="filter-toggle">Filter</button>
-            <button class="filterbtn activefilterbtn"> 
-                All
-            </button>
-            <button class="filterbtn">
-                New Arrivals
-            </button>
-            <button class="filterbtn">
-                Men
-            </button>
-            <button class="filterbtn">
-                Women
-            </button>
+      </div>
+      <!-- Showcase -->
+      <div class="showcase container-fluid w-auto"></div>
+      <!-- Filter and  -->
+      <div class="filter">
+        <div class="categories" id="categoryContainer">
+          <button class="filter-toggle">All</button>
         </div>
-        <div class="filter-magic-stars">
-          <img src="images/stars.png" alt="Filter Magic Stars" />
-        </div>
+      </div>
+      <!-- Products -->
+
+      <div
+        class="row flex-wrap justify-content-center products container-fluid"
+      ></div>
+      <!-- Footer -->
+      <div class="footer">
+        <p>&copy; 2026 BRANDNAME. All rights reserved.</p>
+      </div>
     </div>
-    <!-- Products -->
-    
-        <div class="row flex-wrap justify-content-center products container-fluid">
-        <div class="product col-12 col-md-6 col-lg-4 p-3">
-            <img src="images/shoes/1.png" alt="Product 1" />
-            <div class="product-information">
-            <h2>Classic White Sneakers</h2>
-            <p>120 USD</p>
-            <button class="btn btn-primary" onclick="addToCart(1)">Add to Cart</button>
+
+    <!-- Cart Form Modal-->
+    <div class="modal fade" id="cartModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Shopping cart</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="cartItems"></div>
+
+            <div class="modal-footer">
+              <div class="flex-grow-1 d-flex justify-content-center">
+                <div id="cartTotal" class="fw-semibold fs-5 text-primary">
+                  Totalt: <span class="text-primary">0.00 USD</span>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+
+              <button
+                type="submit"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#checkoutModal"
+                id="goToCheckout"
+              >
+                Checkout
+              </button>
             </div>
-        </div>
-        <div class="product col-12 col-md-6 col-lg-4 p-3">
-            <img src="images/shoes/2.png" alt="Product 2" />
-            <div class="product product-information">
-            <h2>Brown Leather Boots</h2>
-            <p>250 USD</p>
-            <button class="btn btn-primary" onclick="addToCart(2)">Add to Cart</button>
-              </div>
-        </div>
-        <div class="product col-12 col-md-6 col-lg-4 p-3">
-            <img src="images/shoes/3.png" alt="Product 3" />
-            <div class="product-information">
-            <h2>Black Running Shoes</h2>
-            <p>135 USD</p>
-            <button class="btn btn-primary" onclick="addToCart(3)">Add to Cart</button>
-              </div>
-        </div>
-            <div class="product col-12 col-md-6 col-lg-4 p-3">
-            <img src="images/shoes/4.png" alt="Product 4" />
-            <div class="product-information">
-            <h2>Stylish Beige Heels</h2>
-            <p>180 USD</p>
-            <button class="btn btn-primary" onclick="addToCart(4)">Add to Cart</button>
-        </div></div>
-
-
-    </div>
-        <!-- Footer -->
-         <div class="footer">
-            <p>&copy; 2026 BRANDNAME. All rights reserved.</p>
-        </div>
-</div>  
-
-  <div class="container py-5">
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="printS">
-      Open modal
-    </button>
-  </div>
-
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Testmodal</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          Nu fungerar modalen.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stäng</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+
+    <!-- Order Form Modal -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Checkout</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="checkoutForm" onsubmit="submitOrder(event)" novalidate>
+              <div class="mb-3">
+                <div class="form-floating mb-3">
+                  <input
+                    type="text"
+                    minlength="2"
+                    maxlength="50"
+                    class="form-control"
+                    id="name"
+                    name="Firstname"
+                    placeholder="Förnamn"
+                    required
+                  />
+                  <label for="name">Firstname</label>
+                  <div class="invalid-feedback">
+                    Please enter your first name (minimum 2 characters, maximum
+                    50 characters).
+                  </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                  <input
+                    type="text"
+                    minlength="2"
+                    maxlength="50"
+                    class="form-control"
+                    id="lastname"
+                    name="Lastname"
+                    placeholder="Efternamn"
+                    required
+                  />
+                  <label for="lastname">Lastname</label>
+                  <div class="invalid-feedback">
+                    Please enter your last name (minimum 2 characters, maximum
+                    50 characters).
+                  </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    name="Email"
+                    placeholder="Email"
+                    required
+                  />
+                  <label for="email">Email</label>
+                  <div class="invalid-feedback">
+                    Please enter a valid email address.
+                  </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    minlength="2"
+                    maxlength="50"
+                    id="address"
+                    name="Address"
+                    placeholder="Adress"
+                    required
+                  />
+                  <label for="address">Address</label>
+                  <div class="invalid-feedback">
+                    Please enter your address.(minimum 2 characters, maximum 50
+                    characters).
+                  </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                  <input
+                    type="text"
+                    pattern="^\d{3}\s?\d{2}$"
+                    class="form-control"
+                    id="postalcode"
+                    name="PostalCode"
+                    placeholder="Zip code"
+                    required
+                  />
+                  <label for="postalcode">Zip code</label>
+                  <div class="invalid-feedback">
+                    Please enter a valid zip code (5 digits).
+                  </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                  <input
+                    type="text"
+                    minlength="2"
+                    maxlength="20"
+                    class="form-control"
+                    id="city"
+                    name="City"
+                    placeholder="City"
+                    required
+                  />
+                  <label for="city">City</label>
+                  <div class="invalid-feedback">
+                    Please enter your city (minimum 2 characters, maximum 20
+                    characters).
+                  </div>
+                </div>
+              </div>
+
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#cartModal"
+                >
+                  Back to shopping cart
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Place order
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- order confirmation modal-->
+    <div class="modal fade" id="orderConfirmationModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Order confirmation</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="orderConfirmationMessage">
+              A confirmation that the order has been placed, or a error message
+              if something went wrong.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
