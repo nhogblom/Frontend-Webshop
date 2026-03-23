@@ -34,8 +34,8 @@ function displayItemsStore(items, category = "all") {
     <div class="card-body d-flex flex-column">
       <h2 class="h6 mb-2">${item.title}</h2>
       <p class="">${item.description}</p>
-      <p class="fw-semibold mb-3">$${item.price}</p>
-      <button class="btn btn-primary mt-auto w-100" onclick="handleAddToCart(this,${item.id})">
+      <p class="fw-semibold mb-3 mt-auto">$${item.price}</p>
+      <button class="btn btn-primary  w-100" onclick="handleAddToCart(this,${item.id})">
         Add to Cart
       </button>
     </div>
@@ -398,7 +398,6 @@ function getCategories() {
 
 getCategories();
 
-
 function handleAddToCart(button, itemId) {
   const productCard = button.closest(".product");
   const productImage = productCard.querySelector(".img-container img");
@@ -464,6 +463,6 @@ function animateImageToCart(imgElement, cartElement) {
         cartElement.classList.remove("cart-bounce");
       }, 300);
     },
-    { once: true }
+    { once: true },
   );
 }
