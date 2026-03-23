@@ -1,7 +1,6 @@
 // todo burgermeny skall visas och döljas när man trycker på den
 // gå igenom så att det linte ligger någon död kod i js filen samt kolla så att det inte är något knasigt css som jobbar mot varandra. bootstrap vs style.css
 
-
 let storeItems = [];
 
 // Fetch products from the API and display them on the page
@@ -59,7 +58,7 @@ fetch("https://fakestoreapi.com/products/")
 
 function addToCart(itemId) {
   console.log(`Adding item with ID ${itemId} to cart`);
-  let cart = getCart()
+  let cart = getCart();
   let updatedCart = [];
 
   let itemAlreadyPresentInCart = false;
@@ -84,7 +83,7 @@ function addToCart(itemId) {
 // ta bort en produkt helt från kundvagnen, oavsett antal
 
 function removeFromCart(itemId) {
-  let cart = getCart()
+  let cart = getCart();
   let updatedCart = cart.filter((item) => item.itemId != itemId);
   localStorage.setItem("cart", JSON.stringify(updatedCart));
   renderCart();
@@ -94,7 +93,7 @@ function removeFromCart(itemId) {
 
 function changeCartItemQuantity(itemId, newQuantity) {
   newQuantity = Number(newQuantity);
-  let cart = getCart()
+  let cart = getCart();
   let updatedCart = [];
   cart.forEach((item) => {
     if (item.itemId == itemId) {
@@ -118,32 +117,30 @@ function clearCart() {
 
 const clearCartButton = document.querySelector("#clearCart");
 
-clearCartButton.addEventListener("click",() => {
+clearCartButton.addEventListener("click", () => {
   clearCart();
 });
 
-
-function cartSize(){
-  let cart = JSON.parse(localStorage.getItem("cart") || [])
-  if (cart.length === 0){
+function cartSize() {
+  let cart = JSON.parse(localStorage.getItem("cart") || []);
+  if (cart.length === 0) {
     return 0;
   }
   let count = 0;
   cart.forEach((item) => {
-    count += (item.count)
+    count += item.count;
   });
   return count;
 }
 
-function getCart(){
+function getCart() {
   return JSON.parse(localStorage.getItem("cart")) || [];
 }
-
 
 // rendera alla produkter i kundvagnen i cartModalen, för varje produkt, visa produktbild, titel, pris per styck, antal, summa för den produkten (pris per styck * antal) och knappar för att öka, minska eller ta bort produkten från kundvagnen. Längst ner i modalen, visa den totala summan för alla produkter i kundvagnen.
 
 function renderCart() {
-  let cart = getCart()
+  let cart = getCart();
   const carItemsContainer = document.getElementById("cartItems");
   const cartMenuIcon = document.querySelector("#cartMenu");
 
@@ -153,7 +150,7 @@ function renderCart() {
     document.getElementById("cartTotal").innerHTML = "Totalt: 0.00 USD";
     document.getElementById("goToCheckout").disabled = true;
     cartMenuIcon.classList.add("text-secondary");
-    cartMenuIcon.classList.remove("text-primary");  
+    cartMenuIcon.classList.remove("text-primary");
     cartMenuIcon.innerHTML = "";
     return;
   }
@@ -189,7 +186,7 @@ function renderCart() {
       <button
         type="button"
         class="btn btn-sm btn-primary"
-        onclick="changeCartItemQuantity(${item.id}, ${(Number(cartItem.count) - 1)})"
+        onclick="changeCartItemQuantity(${item.id}, ${Number(cartItem.count) - 1})"
       >
         -
       </button>
@@ -206,7 +203,7 @@ function renderCart() {
       <button
         type="button"
         class="btn btn-sm btn-primary"
-        onclick="changeCartItemQuantity(${item.id}, ${(Number(cartItem.count) + 1)})"
+        onclick="changeCartItemQuantity(${item.id}, ${Number(cartItem.count) + 1})"
       >
         +
       </button>
@@ -350,5 +347,3 @@ function getCategories() {
 }
 
 getCategories();
-
-
