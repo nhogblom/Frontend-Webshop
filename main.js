@@ -18,7 +18,7 @@ function displayItemsStore(items, category = "all") {
       "col-12",
       "col-sm-6",
       "col-lg-4",
-      "p-2",
+      "p-1",
     );
 
     itemElement.innerHTML = `
@@ -32,7 +32,8 @@ function displayItemsStore(items, category = "all") {
     </div>
 
     <div class="card-body d-flex flex-column">
-      <h2 class="h6 mb-2 text-truncate">${item.title}</h2>
+      <h2 class="h6 mb-2">${item.title}</h2>
+      <p class="">${item.description}</p>
       <p class="fw-semibold mb-3">$${item.price}</p>
       <button class="btn btn-primary mt-auto w-100" onclick="addToCart(${item.id})">
         Add to Cart
@@ -325,14 +326,16 @@ function createListenersForFilterButtons() {
         if (buttonText === btn.innerHTML) {
           if (btn instanceof HTMLButtonElement) {
             btn.classList.add("btn-primary");
-          } else {
-            if (buttonText === btn.innerHTML) {
-              btn.classList.add("active");
-              toggleSmallScreenMenu();
-            }
+          }
+          if (btn instanceof HTMLLIElement) {
+            btn.classList.add("active");
           }
         }
       });
+      if (button instanceof HTMLLIElement) {
+        toggleSmallScreenMenu();
+      }
+
       const category = button.innerHTML;
       category === "All"
         ? displayItemsStore(storeItems)
