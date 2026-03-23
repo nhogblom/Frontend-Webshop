@@ -1,23 +1,11 @@
 body {
-  background-color: #ffffff;
-}
-
-.container {
   background-color: #f8f8f8;
-  max-width: 1024px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 16px;
-}
-.container h1 {
-  color: #333;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 42px;
 }
 .header .brand {
   margin-top: 10px;
@@ -65,49 +53,6 @@ body {
   color: #fefefe;
   padding-top: 140px;
   padding-left: 50px;
-}
-
-.filter {
-  display: flex;
-  justify-content: space-between;
-  margin-left: 60px;
-  font-family: "Montserrat";
-  font-size: 18px;
-  color: #40434b;
-}
-.filter .categories {
-  display: flex;
-  gap: 30px;
-  margin-bottom: 10px;
-}
-.filter .categories .filter-toggle {
-  margin-top: 25px;
-  height: 50px;
-  width: 100px;
-  border-radius: 5px;
-  border: none;
-  background-color: #fefefe;
-  text-decoration: none;
-}
-.filter .categories .filter-toggle:hover {
-  border: 2px solid #e2e3e3;
-}
-.filter .categories .filter-toggle {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08), 0 8px 20px rgba(0, 0, 0, 0.1);
-}
-.filter .categories .filterbtn {
-  margin-top: 25px;
-  background-color: transparent;
-  border: none;
-}
-.filter .categories .filterbtn:hover {
-  font-weight: bold;
-}
-.filter .categories .activefilterbtn {
-  font-weight: bold;
-}
-.filter .filter-magic-stars img {
-  width: 150px;
 }
 
 .product .img-container {

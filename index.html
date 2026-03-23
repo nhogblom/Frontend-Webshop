@@ -24,31 +24,36 @@
     <script src="main.js" defer></script>
   </head>
   <body>
-    <div class="container flex-column">
+    <div class="container">
       <!-- Header-->
-      <div class="header container-fluid">
+      <div class="header">
         <div class="brand">
           <h1>BRANDNAME</h1>
         </div>
         <nav>
-          <a id="cartMenu" data-bs-toggle="modal" data-bs-target="#cartModal"
-            ><i class="fa-solid fa-cart-shopping"></i
-          ></a>
+          <button
+            id="cartMenu"
+            type="button"
+            class="btn p-0 border-0 bg-transparent"
+            data-bs-toggle="modal"
+            data-bs-target="#cartModal"
+          >
+            <i class="fa-solid fa-cart-shopping"></i>
+          </button>
         </nav>
       </div>
       <!-- Showcase -->
-      <div class="showcase container-fluid w-auto"></div>
-      <!-- Filter and  -->
-      <div class="filter">
-        <div class="categories" id="categoryContainer">
-          <button class="filter-toggle">All</button>
-        </div>
+      <div class="showcase"></div>
+      <!-- Filter  -->
+      <div class="d-none d-sm-flex justify-content-between">
+        <div class="mt-2" id="categoryContainer"></div>
       </div>
+      <div class="d-sm-none" id="burgerFilterIcon">
+        <i class="fa-solid fa-bars"></i>
+      </div>
+      <div class="smallDeviceFilterMenu"></div>
       <!-- Products -->
-
-      <div
-        class="row flex-wrap justify-content-center products container-fluid"
-      ></div>
+      <div class="products row justify-content-center g-3"></div>
       <!-- Footer -->
       <div class="footer">
         <p>&copy; 2026 BRANDNAME. All rights reserved.</p>
@@ -70,32 +75,35 @@
           </div>
           <div class="modal-body">
             <div id="cartItems"></div>
-
-            <div class="modal-footer">
-              <div class="flex-grow-1 d-flex justify-content-center">
-                <div id="cartTotal" class="fw-semibold fs-5 text-primary">
-                  Totalt: <span class="text-primary">0.00 USD</span>
-                </div>
+          </div>
+          <div class="modal-footer">
+            <div class="flex-grow-1 d-flex justify-content-center">
+              <div id="cartTotal" class="fw-semibold fs-5 text-primary">
+                Totalt: <span class="text-primary">0.00 USD</span>
               </div>
-
-              <button
-                type="button"
-                class="btn btn-secondary"
-                data-bs-dismiss="modal"
-              >
-                Close
-              </button>
-
-              <button
-                type="submit"
-                class="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#checkoutModal"
-                id="goToCheckout"
-              >
-                Checkout
-              </button>
             </div>
+
+            <button type="button" class="btn btn-warning" id="clearCart">
+              Clear cart
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+
+            <button
+              type="submit"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#checkoutModal"
+              id="goToCheckout"
+            >
+              Checkout
+            </button>
           </div>
         </div>
       </div>
@@ -240,7 +248,7 @@
       </div>
     </div>
 
-    <!-- order confirmation modal-->
+    <!-- Order confirmation modal-->
     <div class="modal fade" id="orderConfirmationModal" tabindex="-1">
       <div class="modal-dialog">
         <div class="modal-content">

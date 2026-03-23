@@ -1,3 +1,8 @@
+// todo burgermeny för mindre skärm.
+// gå igenom så att det linte ligger någon död kod i js filen samt kolla så att det inte är något knasigt css som jobbar mot varandra. bootstrap vs style.css
+
+// todo fixa + - knapp när det behövs i lägre upplösningar.
+
 let storeItems = [];
 
 // Fetch products from the API and display them on the page
@@ -112,6 +117,12 @@ function clearCart() {
   renderCart();
 }
 
+const clearCartButton = document.querySelector("#clearCart");
+
+clearCartButton.addEventListener("click",() => {
+  clearCart();
+});
+
 // rendera alla produkter i kundvagnen i cartModalen, för varje produkt, visa produktbild, titel, pris per styck, antal, summa för den produkten (pris per styck * antal) och knappar för att öka, minska eller ta bort produkten från kundvagnen. Längst ner i modalen, visa den totala summan för alla produkter i kundvagnen.
 
 function renderCart() {
@@ -133,21 +144,28 @@ function renderCart() {
   cart.forEach((cartItem) => {
     const item = storeItems.find((item) => item.id === cartItem.itemId);
     output += `
-     <div class="d-flex align-items-center gap-3 border rounded-3 p-3 bg-light">
-  <div class="flex-shrink-0">
-    <img
-      src="${item.image}"
-      alt="${item.title}"
-      class="rounded border bg-white p-2 object-fit-contain"
-      style="width: 90px; height: 90px;"
-    >
+<div class="border rounded-3 p-3 bg-light">
+  <div class="d-flex align-items-center gap-3 mb-3">
+    <div class="flex-shrink-0">
+      <img
+        src="${item.image}"
+        alt="${item.title}"
+        class="rounded border bg-white p-2 object-fit-contain"
+        style="width: 90px; height: 90px;"
+      >
+    </div>
+
+    <div class="flex-grow-1" style="min-width: 0;">
+      <h6 class="mb-1">${item.title}</h6>
+      <div class="small text-muted">Price/pcs: ${item.price} USD</div>
+    </div>
   </div>
 
-  <div class="flex-grow-1">
-    <h6 class="mb-1">${item.title}</h6>
-    <div class="small text-muted">Price/pcs: ${item.price} USD</div>
-  </div>
-
+  <div>
+  <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
+    <button type="button" class="d-block d-xl-none btn btn-sm btn-danger" onclick="${(Number(cartItem.count) - 1)}">
+    -
+    </button>
     <input
       type="number"
       min="1"
@@ -156,13 +174,17 @@ function renderCart() {
       style="width: 70px;"
       onchange="changeCartItemQuantity(${item.id}, this.value)"
     >
+     <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
+    <button type="button" class="d-block d-xl-none btn btn-sm btn-primary" onclick="${(Number(cartItem.count) + 1)}">
+    +
+    </button>
+    </div>
 
-  <div class="text-end flex-shrink-0" style="min-width: 110px;">
-    <div class="small text-muted">Summa</div>
-    <div class="fw-bold">${(item.price * cartItem.count).toFixed(2)} USD</div>
-  </div>
+    <div class="text-end ms-auto">
+      <div class="small text-muted">Summa</div>
+      <div class="fw-bold">${(item.price * cartItem.count).toFixed(2)} USD</div>
+    </div>
 
-  <div class="flex-shrink-0">
     <button
       type="button"
       class="btn btn-sm btn-outline-danger"
@@ -245,7 +267,7 @@ function submitOrder(e) {
   <div class="text-center py-3">
     <h4 class="mb-3">Thank you for your order!</h4>
     <p class="mb-2">We have received your order and started processing it.</p>
-    <p class="mb-0 text-muted">An order confirmation has been sent to <strong>${email}</strong>.</p>
+    <p class="mb-0">An order confirmation has been sent to <strong>${email}</strong>.</p>
   </div>
 `;
     orderConfirmationModal.show();
@@ -256,30 +278,45 @@ function submitOrder(e) {
   }
 }
 
-document.querySelector(".filter-toggle").addEventListener("click", () => {
-  displayItemsStore(storeItems);
-});
+function createListenersForFilterButtons() {
+  const filterButtons = document.querySelectorAll(".filterbtn");
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      filterButtons.forEach((btn) => {
+        btn.classList.remove("btn-primary");
+        button.classList.add("btn-primary");
+      });
+      const category = button.innerHTML;
+      category === "All"
+        ? displayItemsStore(storeItems)
+        : displayItemsStore(storeItems, category);
+    });
+  });
+}
+
+function createFilterButton(category) {
+  const categoryContainer = document.querySelector("#categoryContainer");
+  const categoryMenuItem = document.createElement("button");
+  categoryMenuItem.classList.add("filterbtn", "btn", "mx-1", "text-capitalize");
+  if (category === "All") {
+    categoryMenuItem.classList.add("btn-primary");
+  }
+  categoryMenuItem.innerHTML = category;
+  categoryContainer.appendChild(categoryMenuItem);
+}
 
 function getCategories() {
+  createFilterButton("All");
   fetch("https://fakestoreapi.com/products/categories")
     .then((res) => res.json())
     .then((categories) => {
       categories.forEach((category) => {
-        const categoryContainer = document.querySelector("#categoryContainer");
-        const categoryItem = document.createElement("button");
-        categoryItem.classList.add("filterbtn", "text-capitalize");
-        categoryItem.innerHTML = category;
-        categoryItem.addEventListener("click", () => {
-          displayItemsStore(storeItems, category);
-          const filterButtons = document.querySelectorAll(".filterbtn");
-          filterButtons.forEach((btn) =>
-            btn.classList.remove("activefilterbtn"),
-          );
-          categoryItem.classList.add("activefilterbtn");
-        });
-        categoryContainer.appendChild(categoryItem);
+        createFilterButton(category);
       });
+      createListenersForFilterButtons();
     });
 }
 
 getCategories();
+
+
