@@ -26,23 +26,33 @@
   <body>
     <div class="container">
       <!-- Header-->
-      <div class="header sticky-top">
-        <div class="brand">
-          <h1>BRANDNAME</h1>
+      <div class="sticky-top">
+        <div class="header">
+          <div class="brand">
+            <h1>BRANDNAME</h1>
+          </div>
+          <nav>
+            <button
+              class="btn p-0 border-0 bg-transparent d-sm-none fs-4"
+              id="burgerFilterIcon"
+            >
+              <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <button
+              type="button"
+              class="btn p-0 border-0 bg-transparent"
+              data-bs-toggle="modal"
+              data-bs-target="#cartModal"
+            >
+              <i class="fa-solid fa-cart-shopping text-secondary" id="cartMenu">
+              </i>
+            </button>
+          </nav>
         </div>
-        <nav>
-          <button
-            type="button"
-            class="btn p-0 border-0 bg-transparent"
-            data-bs-toggle="modal"
-            data-bs-target="#cartModal"
-          >
-            <i
-              class="fa-solid fa-cart-shopping text-secondary"
-              id="cartMenu"
-            ></i>
-          </button>
-        </nav>
+        <div>
+          <ul id="smallDeviceFilterMenu" class="list-group d-none"></ul>
+        </div>
       </div>
       <!-- Showcase -->
       <div class="showcase"></div>
@@ -50,10 +60,7 @@
       <div class="d-none d-sm-flex justify-content-between">
         <div class="mt-2" id="categoryContainer"></div>
       </div>
-      <div class="d-sm-none" id="burgerFilterIcon">
-        <i class="fa-solid fa-bars"></i>
-      </div>
-      <div class="smallDeviceFilterMenu"></div>
+
       <!-- Products -->
       <div class="products row justify-content-center g-3"></div>
       <!-- Footer -->
@@ -176,8 +183,7 @@
                   />
                   <label for="phone">Phone no</label>
                   <div class="invalid-feedback">
-                    Please enter a valid Swedish phone number (e.g. 0701234567, +46 70 123 45 67, (08)943696, or 08-943696).
-                    or +46701234567).
+                    Please enter a valid Swedish phone number.
                   </div>
                 </div>
 

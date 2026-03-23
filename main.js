@@ -307,13 +307,31 @@ function submitOrder(e) {
   }
 }
 
+const burgerMenuButton = document.querySelector("#burgerFilterIcon");
+const smallScreenMenu = document.querySelector("#smallDeviceFilterMenu");
+burgerMenuButton.addEventListener("click", (e) => toggleSmallScreenMenu(e));
+
+function toggleSmallScreenMenu(btn) {
+  smallScreenMenu.classList.toggle("d-none");
+}
+
 function createListenersForFilterButtons() {
   const filterButtons = document.querySelectorAll(".filterbtn");
   filterButtons.forEach((button) => {
+    const buttonText = button.innerHTML;
     button.addEventListener("click", () => {
       filterButtons.forEach((btn) => {
-        btn.classList.remove("btn-primary");
-        button.classList.add("btn-primary");
+        btn.classList.remove("btn-primary", "active");
+        if (buttonText === btn.innerHTML) {
+          if (btn instanceof HTMLButtonElement) {
+            btn.classList.add("btn-primary");
+          } else {
+            if (buttonText === btn.innerHTML) {
+              btn.classList.add("active");
+              toggleSmallScreenMenu();
+            }
+          }
+        }
       });
       const category = button.innerHTML;
       category === "All"
@@ -334,13 +352,32 @@ function createFilterButton(category) {
   categoryContainer.appendChild(categoryMenuItem);
 }
 
+function createFilterList(category) {
+  const categorySmallDeviceContainer = document.querySelector(
+    "#smallDeviceFilterMenu",
+  );
+  const categoryListItem = document.createElement("li");
+  categoryListItem.classList.add(
+    "list-group-item",
+    "text-capitalize",
+    "filterbtn",
+  );
+  if (category === "All") {
+    categoryListItem.classList.add("list-group-item", "active");
+  }
+  categoryListItem.innerHTML = category;
+  categorySmallDeviceContainer.appendChild(categoryListItem);
+}
+
 function getCategories() {
   createFilterButton("All");
+  createFilterList("All");
   fetch("https://fakestoreapi.com/products/categories")
     .then((res) => res.json())
     .then((categories) => {
       categories.forEach((category) => {
         createFilterButton(category);
+        createFilterList(category);
       });
       createListenersForFilterButtons();
     });
