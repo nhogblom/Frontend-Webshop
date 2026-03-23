@@ -42,7 +42,7 @@ body {
 }
 
 .showcase {
-  background-image: url("/images/showcase.png");
+  background-image: url("../images/showcase.png");
   background-size: cover;
   background-position: center;
   width: 100%;

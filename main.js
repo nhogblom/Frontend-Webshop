@@ -1,7 +1,6 @@
-// todo burgermeny för mindre skärm.
+// todo burgermeny skall visas och döljas när man trycker på den
 // gå igenom så att det linte ligger någon död kod i js filen samt kolla så att det inte är något knasigt css som jobbar mot varandra. bootstrap vs style.css
 
-// todo fixa + - knapp när det behövs i lägre upplösningar.
 
 let storeItems = [];
 
@@ -161,23 +160,33 @@ function renderCart() {
     </div>
   </div>
 
-  <div>
-  <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
-    <button type="button" class="d-block d-xl-none btn btn-sm btn-danger" onclick="${(Number(cartItem.count) - 1)}">
-    -
-    </button>
-    <input
-      type="number"
-      min="1"
-      value="${cartItem.count}"
-      class="form-control form-control-sm text-center"
-      style="width: 70px;"
-      onchange="changeCartItemQuantity(${item.id}, this.value)"
-    >
-     <div class="d-flex align-items-center justify-content-between gap-2 flex-wrap">
-    <button type="button" class="d-block d-xl-none btn btn-sm btn-primary" onclick="${(Number(cartItem.count) + 1)}">
-    +
-    </button>
+  <div class="d-flex align-items-center justify-content-between gap-3 flex-nowrap">
+    
+    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+      <button
+        type="button"
+        class="btn btn-sm btn-primary"
+        onclick="changeCartItemQuantity(${item.id}, ${(Number(cartItem.count) - 1)})"
+      >
+        -
+      </button>
+
+      <input
+        type="number"
+        min="1"
+        value="${cartItem.count}"
+        class="form-control form-control-sm text-center"
+        style="width: 70px;"
+        onchange="changeCartItemQuantity(${item.id}, this.value)"
+      >
+
+      <button
+        type="button"
+        class="btn btn-sm btn-primary"
+        onclick="changeCartItemQuantity(${item.id}, ${(Number(cartItem.count) + 1)})"
+      >
+        +
+      </button>
     </div>
 
     <div class="text-end ms-auto">
@@ -187,7 +196,7 @@ function renderCart() {
 
     <button
       type="button"
-      class="btn btn-sm btn-outline-danger"
+      class="btn btn-sm btn-outline-danger flex-shrink-0"
       onclick="removeFromCart(${item.id})"
       title="Remove product"
     >
