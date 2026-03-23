@@ -41,12 +41,17 @@
 
             <button
               type="button"
-              class="btn p-0 border-0 bg-transparent"
+              class="btn p-0 border-0 bg-transparent position-relative"
               data-bs-toggle="modal"
               data-bs-target="#cartModal"
+              id="cartButton"
+              aria-label="Open shopping cart"
             >
-              <i class="fa-solid fa-cart-shopping text-secondary" id="cartMenu">
-              </i>
+              <i
+                class="fa-solid fa-cart-shopping text-secondary"
+                id="cartIcon"
+              ></i>
+              <span id="cartCount" class="cart-count d-none">0</span>
             </button>
           </nav>
         </div>
