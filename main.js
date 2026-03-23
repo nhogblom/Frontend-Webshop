@@ -59,7 +59,7 @@ fetch("https://fakestoreapi.com/products/")
 
 function addToCart(itemId) {
   console.log(`Adding item with ID ${itemId} to cart`);
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = getCart()
   let updatedCart = [];
 
   let itemAlreadyPresentInCart = false;
@@ -84,7 +84,7 @@ function addToCart(itemId) {
 // ta bort en produkt helt från kundvagnen, oavsett antal
 
 function removeFromCart(itemId) {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = getCart()
   let updatedCart = cart.filter((item) => item.itemId != itemId);
   localStorage.setItem("cart", JSON.stringify(updatedCart));
   renderCart();
@@ -94,7 +94,7 @@ function removeFromCart(itemId) {
 
 function changeCartItemQuantity(itemId, newQuantity) {
   newQuantity = Number(newQuantity);
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = getCart()
   let updatedCart = [];
   cart.forEach((item) => {
     if (item.itemId == itemId) {
@@ -122,21 +122,44 @@ clearCartButton.addEventListener("click",() => {
   clearCart();
 });
 
+
+function cartSize(){
+  let cart = JSON.parse(localStorage.getItem("cart") || [])
+  if (cart.length === 0){
+    return 0;
+  }
+  let count = 0;
+  cart.forEach((item) => {
+    count += (item.count)
+  });
+  return count;
+}
+
+function getCart(){
+  return JSON.parse(localStorage.getItem("cart")) || [];
+}
+
+
 // rendera alla produkter i kundvagnen i cartModalen, för varje produkt, visa produktbild, titel, pris per styck, antal, summa för den produkten (pris per styck * antal) och knappar för att öka, minska eller ta bort produkten från kundvagnen. Längst ner i modalen, visa den totala summan för alla produkter i kundvagnen.
 
 function renderCart() {
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  let cart = getCart()
   const carItemsContainer = document.getElementById("cartItems");
+  const cartMenuIcon = document.querySelector("#cartMenu");
 
   if (cart.length === 0) {
     carItemsContainer.innerHTML =
       "<div class='alert alert-warning'>Your cart is empty.</div>";
     document.getElementById("cartTotal").innerHTML = "Totalt: 0.00 USD";
     document.getElementById("goToCheckout").disabled = true;
-    document.querySelector("#cartMenu").classList.add("text-primary");
+    cartMenuIcon.classList.add("text-secondary");
+    cartMenuIcon.classList.remove("text-primary");  
+    cartMenuIcon.innerHTML = "";
     return;
   }
-  document.querySelector("#cartMenu").classList.remove("text-primary");
+  cartMenuIcon.classList.remove("text-secondary");
+  cartMenuIcon.classList.add("text-primary");
+  cartMenuIcon.innerHTML = cartSize();
   document.getElementById("goToCheckout").disabled = false;
 
   let output = "";
