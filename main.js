@@ -1,25 +1,36 @@
-
 let storeItems = [];
 
-// Fetch products from the API and display them on the page
+// körs vid laddning av sidan, produkterna från fakestori api hämtas omvandlas till JSON och lagras i storeItems, renderProductCards & renderCart anropas.
+fetch("https://fakestoreapi.com/products/")
+  .then((res) => res.json())
+  .then((items) => {
+    renderProductCards(items);
+    storeItems = items;
+    renderCart();
+  });
 
-function displayItemsStore(items, category = "all") {
-  const container = document.querySelector(".products");
-  container.innerHTML = "";
+// Skriv ut ProductCards baserat på kategori
+
+function renderProductCards(items, category = "all") {
+  const productContainer = document.querySelector(".products");
+  // rensa innehåll
+  productContainer.innerHTML = "";
+  // om kategorin är annat än all selektera ut rätt items.
   if (category !== "all") {
     items = items.filter((item) => item.category == category);
   }
+  // för varje item skapa ett product card.
   items.forEach((item) => {
-    const itemElement = document.createElement("div");
-    itemElement.classList.add(
-      "product",
-      "col-12",
-      "col-sm-6",
-      "col-lg-4",
-      "p-1",
-    );
+    productCardFromItem(item, productContainer);
+  });
+}
 
-    itemElement.innerHTML = `
+// Skapar ett product card av ett items JSON värden.
+function productCardFromItem(item, productContainer) {
+  const itemElement = document.createElement("div");
+  itemElement.classList.add("product", "col-12", "col-sm-6", "col-lg-4", "p-1");
+
+  itemElement.innerHTML = `
   <div class="card h-100 border-0 shadow-sm">
     <div class="img-container d-flex align-items-center justify-content-center bg-white rounded-top" style="height: 180px;">
       <img 
@@ -39,44 +50,37 @@ function displayItemsStore(items, category = "all") {
     </div>
   </div>
 `;
-    container.appendChild(itemElement);
-  });
+  productContainer.appendChild(itemElement);
 }
 
-fetch("https://fakestoreapi.com/products/")
-  .then((res) => res.json())
-  .then((items) => {
-    displayItemsStore(items);
-    storeItems = items;
-    renderCart();
-  });
-
-// Cart functionality ~
+function saveCartToLocalStorage(cart) {
+  localStorage.setItem("cart", JSON.stringify(cart));
+  renderCart();
+}
 
 // lägg till en produkt i kundvagnen, om produkten redan finns i kundvagnen, öka bara antalet av den produkten
 
 function addToCart(itemId) {
-  console.log(`Adding item with ID ${itemId} to cart`);
   let cart = getCart();
   let updatedCart = [];
-
   let itemAlreadyPresentInCart = false;
+
   cart.forEach((item) => {
     if (item.itemId == itemId) {
-      console.log(`Item with ID ${itemId} already in cart, increasing count`);
+      // item already exists in cart, add one to item count and store back to updatedCart, set itemAlreadyPresentInCart to true.
       updatedCart.push({ itemId: itemId, count: item.count + 1 });
       itemAlreadyPresentInCart = true;
     } else {
+      // previous cart item did not match incomming itemid, keep in updated cart.
       updatedCart.push(item);
     }
   });
   if (!itemAlreadyPresentInCart) {
-    console.log(`Item with ID ${itemId} not in cart, adding new item`);
+    // item was not already in cart, add to updated cart with count 1.
     updatedCart.push({ itemId: itemId, count: 1 });
   }
 
-  localStorage.setItem("cart", JSON.stringify(updatedCart));
-  renderCart();
+  saveCartToLocalStorage(updatedCart);
 }
 
 // ta bort en produkt helt från kundvagnen, oavsett antal
@@ -84,8 +88,7 @@ function addToCart(itemId) {
 function removeFromCart(itemId) {
   let cart = getCart();
   let updatedCart = cart.filter((item) => item.itemId != itemId);
-  localStorage.setItem("cart", JSON.stringify(updatedCart));
-  renderCart();
+  saveCartToLocalStorage(updatedCart);
 }
 
 // ändra antalet av en produkt i kundvagnen till ett specifikt antal, om det nya antalet är mindre än 1, ta bort produkten helt från kundvagnen
@@ -103,8 +106,7 @@ function changeCartItemQuantity(itemId, newQuantity) {
       updatedCart.push(item);
     }
   });
-  localStorage.setItem("cart", JSON.stringify(updatedCart));
-  renderCart();
+  saveCartToLocalStorage(updatedCart);
 }
 
 // ta bort alla produkter från kundvagnen
@@ -121,8 +123,7 @@ clearCartButton.addEventListener("click", () => {
 });
 
 function cartSize() {
-  const cart = getCart();
-  return cart.reduce((count, item) => count + item.count, 0);
+  return getCart().reduce((count, item) => count + item.count, 0);
 }
 
 function getCart() {
@@ -141,9 +142,10 @@ function renderCart() {
   const cartTotalContainer = document.getElementById("cartTotal");
 
   if (cart.length === 0) {
+    // sätt default värden om varukorgen är tom.
     cartItemsContainer.innerHTML =
       "<div class='alert alert-warning'>Your cart is empty.</div>";
-    cartTotalContainer.textContent = "Totalt: 0.00 USD";
+    cartTotalContainer.innerHTML = "Totalt: 0.00 USD";
     checkoutButton.disabled = true;
 
     cartIcon.classList.add("text-secondary");
@@ -233,6 +235,7 @@ function renderCart() {
 
   cartItemsContainer.innerHTML = output;
 
+  // beräkna varukorgens totala orderväre
   const total = cart.reduce((sum, cartItem) => {
     const item = storeItems.find((item) => item.id === cartItem.itemId);
     return sum + item.price * cartItem.count;
@@ -243,10 +246,10 @@ function renderCart() {
 
 // Orderformulär och validering ~
 
-// vårat orderformulär i modalen
+// checkout form
 const checkoutForm = document.getElementById("checkoutForm");
 
-// alla fält i orderformuläret som vi vill validera
+// alla fält i checkout som skall valideras
 const fields = checkoutForm.querySelectorAll(".form-control");
 
 // validera enskilt fält
@@ -254,9 +257,11 @@ function validateField(field) {
   if (field.checkValidity()) {
     field.classList.remove("is-invalid");
     field.classList.add("is-valid");
+    return true;
   } else {
     field.classList.remove("is-valid");
     field.classList.add("is-invalid");
+    return false;
   }
 }
 
@@ -265,16 +270,11 @@ fields.forEach((field) => {
   field.addEventListener("blur", () => validateField(field));
 });
 
-function manuallyValidateForm() {
+function manuallyValidateAllInputFields() {
   let formIsValid = true;
   fields.forEach((field) => {
-    if (!field.checkValidity()) {
+    if (!validateField(field)) {
       formIsValid = false;
-      field.classList.remove("is-valid");
-      field.classList.add("is-invalid");
-    } else {
-      field.classList.remove("is-invalid");
-      field.classList.add("is-valid");
     }
   });
   return formIsValid;
@@ -286,7 +286,7 @@ function submitOrder(e) {
   const checkoutModal = bootstrap.Modal.getInstance(checkoutModalForm);
 
   // validera hela formuläret manuellt, och om det är giltigt, visa bekräftelsemodalen med en bekräftelsemeddelande som innehåller kundens email. Stäng sedan bekräftelsemodalen efter 6 sekunder.
-  if (manuallyValidateForm()) {
+  if (manuallyValidateAllInputFields()) {
     checkoutModal.hide();
     const checkoutOrderModal = document.getElementById(
       "orderConfirmationModal",
@@ -312,6 +312,10 @@ function submitOrder(e) {
   }
 }
 
+// ################################################
+// Filtrerings meny
+// ################################################
+
 const burgerMenuButton = document.querySelector("#burgerFilterIcon");
 const smallScreenMenu = document.querySelector("#smallDeviceFilterMenu");
 burgerMenuButton.addEventListener("click", toggleSmallScreenMenu);
@@ -320,50 +324,54 @@ function toggleSmallScreenMenu() {
   smallScreenMenu.classList.toggle("d-none");
 }
 
-function createListenersForFilterButtons() {
+function handleFilterClick(button) {
+  const buttonText = button.textContent.trim();
   const filterButtons = document.querySelectorAll(".filterbtn");
 
   filterButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const buttonText = button.textContent.trim();
+    button.classList.remove("btn-primary", "active");
 
-      filterButtons.forEach((btn) => {
-        btn.classList.remove("btn-primary", "active");
-
-        if (btn.textContent.trim() === buttonText) {
-          if (btn instanceof HTMLButtonElement) {
-            btn.classList.add("btn-primary");
-          }
-
-          if (btn instanceof HTMLLIElement) {
-            btn.classList.add("active");
-          }
-        }
-      });
-
-      if (button instanceof HTMLLIElement) {
-        toggleSmallScreenMenu();
+    if (button.textContent.trim() === buttonText) {
+      if (button instanceof HTMLButtonElement) {
+        button.classList.add("btn-primary");
       }
 
-      buttonText === "All"
-        ? displayItemsStore(storeItems)
-        : displayItemsStore(storeItems, buttonText);
-    });
+      if (button instanceof HTMLLIElement) {
+        button.classList.add("active");
+      }
+    }
   });
+
+  // om knappen som trycktes är en av elementet LI toggla synlighet på burgar menyn
+  if (button instanceof HTMLLIElement) {
+    toggleSmallScreenMenu();
+  }
+
+  buttonText === "All"
+    ? renderProductCards(storeItems)
+    : renderProductCards(storeItems, buttonText);
 }
 
-function createFilterButton(category) {
+function createFilterButtonDesktopMenu(category) {
   const categoryContainer = document.querySelector("#categoryContainer");
   const categoryMenuItem = document.createElement("button");
+
   categoryMenuItem.classList.add("filterbtn", "btn", "mx-1", "text-capitalize");
+
   if (category === "All") {
     categoryMenuItem.classList.add("btn-primary");
   }
+
   categoryMenuItem.innerHTML = category;
+  categoryMenuItem.addEventListener(
+    "click", () =>
+    handleFilterClick(categoryMenuItem),
+  );
+
   categoryContainer.appendChild(categoryMenuItem);
 }
 
-function createFilterList(category) {
+function createFilterLiMobileMenu(category) {
   const categorySmallDeviceContainer = document.querySelector(
     "#smallDeviceFilterMenu",
   );
@@ -377,24 +385,27 @@ function createFilterList(category) {
     categoryListItem.classList.add("list-group-item", "active");
   }
   categoryListItem.innerHTML = category;
+  categoryListItem.addEventListener(
+    "click", () =>
+    handleFilterClick(categoryListItem),
+  );
   categorySmallDeviceContainer.appendChild(categoryListItem);
 }
 
-function getCategories() {
-  createFilterButton("All");
-  createFilterList("All");
+function getCategoriesAndFCreateFilterMenu() {
+  createFilterButtonDesktopMenu("All");
+  createFilterLiMobileMenu("All");
   fetch("https://fakestoreapi.com/products/categories")
     .then((res) => res.json())
     .then((categories) => {
       categories.forEach((category) => {
-        createFilterButton(category);
-        createFilterList(category);
+        createFilterButtonDesktopMenu(category);
+        createFilterLiMobileMenu(category);
       });
-      createListenersForFilterButtons();
     });
 }
 
-getCategories();
+getCategoriesAndFCreateFilterMenu();
 
 function handleAddToCart(button, itemId) {
   const productCard = button.closest(".product");
