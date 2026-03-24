@@ -1,13 +1,17 @@
-let storeItems = [];
+// ################################################
+// Global state och DOM-referenser
+// ################################################
 
-// körs vid laddning av sidan, produkterna från fakestori api hämtas omvandlas till JSON och lagras i storeItems, renderProductCards & renderCart anropas.
-fetch("https://fakestoreapi.com/products/")
-  .then((res) => res.json())
-  .then((items) => {
-    renderProductCards(items);
-    storeItems = items;
-    renderCart();
-  });
+let storeItems = [];
+const clearCartButton = document.querySelector("#clearCart");
+const burgerMenuButton = document.querySelector("#burgerFilterIcon");
+const smallScreenMenu = document.querySelector("#smallDeviceFilterMenu");
+const checkoutForm = document.getElementById("checkoutForm");
+const checkoutFields = checkoutForm.querySelectorAll(".form-control");
+
+// ################################################
+// Produktvisning
+// ################################################
 
 // Skriv ut ProductCards baserat på kategori
 
@@ -53,10 +57,26 @@ function productCardFromItem(item, productContainer) {
   productContainer.appendChild(itemElement);
 }
 
+// ################################################
+// Kundvagn - hjälpfunktioner och localStorage
+// ################################################
+
+function cartSize() {
+  return getCart().reduce((count, item) => count + item.count, 0);
+}
+
 function saveCartToLocalStorage(cart) {
   localStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
 }
+
+function getCart() {
+  return JSON.parse(localStorage.getItem("cart")) || [];
+}
+
+// ################################################
+// Kundvagn - ändringar i innehåll
+// ################################################
 
 // lägg till en produkt i kundvagnen, om produkten redan finns i kundvagnen, öka bara antalet av den produkten
 
@@ -116,19 +136,21 @@ function clearCart() {
   renderCart();
 }
 
-const clearCartButton = document.querySelector("#clearCart");
+function handleAddToCart(button, itemId) {
+  const productCard = button.closest(".product");
+  const productImage = productCard.querySelector(".img-container img");
+  const cartElement = document.querySelector("#cartButton");
 
-clearCartButton.addEventListener("click", () => {
-  clearCart();
-});
+  if (productImage && cartElement) {
+    animateImageToCart(productImage, cartElement);
+  }
 
-function cartSize() {
-  return getCart().reduce((count, item) => count + item.count, 0);
+  addToCart(itemId);
 }
 
-function getCart() {
-  return JSON.parse(localStorage.getItem("cart")) || [];
-}
+// ################################################
+// Kundvagn - rendering i modal
+// ################################################
 
 // rendera alla produkter i kundvagnen i cartModalen, för varje produkt, visa produktbild, titel, pris per styck, antal, summa för den produkten (pris per styck * antal) och knappar för att öka, minska eller ta bort produkten från kundvagnen. Längst ner i modalen, visa den totala summan för alla produkter i kundvagnen.
 
@@ -244,13 +266,9 @@ function renderCart() {
   cartTotalContainer.textContent = `Totalt: ${total.toFixed(2)} USD`;
 }
 
-// Orderformulär och validering ~
-
-// checkout form
-const checkoutForm = document.getElementById("checkoutForm");
-
-// alla fält i checkout som skall valideras
-const fields = checkoutForm.querySelectorAll(".form-control");
+// ################################################
+// Checkout och formulärvalidering
+// ################################################
 
 // validera enskilt fält
 function validateField(field) {
@@ -265,14 +283,9 @@ function validateField(field) {
   }
 }
 
-// skapa eventlisteners för varje fält från orderformuläret
-fields.forEach((field) => {
-  field.addEventListener("blur", () => validateField(field));
-});
-
 function manuallyValidateAllInputFields() {
   let formIsValid = true;
-  fields.forEach((field) => {
+  checkoutFields.forEach((field) => {
     if (!validateField(field)) {
       formIsValid = false;
     }
@@ -313,19 +326,15 @@ function submitOrder(e) {
 }
 
 // ################################################
-// Filtrerings meny
+// Filtreringsmeny
 // ################################################
-
-const burgerMenuButton = document.querySelector("#burgerFilterIcon");
-const smallScreenMenu = document.querySelector("#smallDeviceFilterMenu");
-burgerMenuButton.addEventListener("click", toggleSmallScreenMenu);
 
 function toggleSmallScreenMenu() {
   smallScreenMenu.classList.toggle("d-none");
 }
 
-function handleFilterClick(button) {
-  const buttonText = button.textContent.trim();
+function handleFilterClick(clickedButton) {
+  const buttonText = clickedButton.textContent.trim();
   const filterButtons = document.querySelectorAll(".filterbtn");
 
   filterButtons.forEach((button) => {
@@ -343,7 +352,7 @@ function handleFilterClick(button) {
   });
 
   // om knappen som trycktes är en av elementet LI toggla synlighet på burgar menyn
-  if (button instanceof HTMLLIElement) {
+  if (clickedButton instanceof HTMLLIElement) {
     toggleSmallScreenMenu();
   }
 
@@ -363,8 +372,7 @@ function createFilterButtonDesktopMenu(category) {
   }
 
   categoryMenuItem.innerHTML = category;
-  categoryMenuItem.addEventListener(
-    "click", () =>
+  categoryMenuItem.addEventListener("click", () =>
     handleFilterClick(categoryMenuItem),
   );
 
@@ -385,14 +393,13 @@ function createFilterLiMobileMenu(category) {
     categoryListItem.classList.add("list-group-item", "active");
   }
   categoryListItem.innerHTML = category;
-  categoryListItem.addEventListener(
-    "click", () =>
+  categoryListItem.addEventListener("click", () =>
     handleFilterClick(categoryListItem),
   );
   categorySmallDeviceContainer.appendChild(categoryListItem);
 }
 
-function getCategoriesAndFCreateFilterMenu() {
+function getCategoriesAndCreateFilterMenu() {
   createFilterButtonDesktopMenu("All");
   createFilterLiMobileMenu("All");
   fetch("https://fakestoreapi.com/products/categories")
@@ -405,19 +412,9 @@ function getCategoriesAndFCreateFilterMenu() {
     });
 }
 
-getCategoriesAndFCreateFilterMenu();
-
-function handleAddToCart(button, itemId) {
-  const productCard = button.closest(".product");
-  const productImage = productCard.querySelector(".img-container img");
-  const cartElement = document.querySelector("#cartButton");
-
-  if (productImage && cartElement) {
-    animateImageToCart(productImage, cartElement);
-  }
-
-  addToCart(itemId);
-}
+// ################################################
+// Animationer
+// ################################################
 
 function animateImageToCart(imgElement, cartElement) {
   const imgRect = imgElement.getBoundingClientRect();
@@ -475,3 +472,29 @@ function animateImageToCart(imgElement, cartElement) {
     { once: true },
   );
 }
+
+// ################################################
+// Initiering och event listeners
+// ################################################
+
+// Produkterna från fakestori api hämtas omvandlas till JSON och lagras i storeItems, renderProductCards & renderCart anropas.
+fetch("https://fakestoreapi.com/products/")
+  .then((res) => res.json())
+  .then((items) => {
+    storeItems = items;
+    renderProductCards(items);
+    renderCart();
+  });
+
+getCategoriesAndCreateFilterMenu();
+
+clearCartButton.addEventListener("click", () => {
+  clearCart();
+});
+
+burgerMenuButton.addEventListener("click", toggleSmallScreenMenu);
+
+// skapa eventlisteners för varje fält från orderformuläret
+checkoutFields.forEach((field) => {
+  field.addEventListener("blur", () => validateField(field));
+});
