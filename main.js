@@ -1,5 +1,3 @@
-// todo burgermeny skall visas och döljas när man trycker på den
-// gå igenom så att det linte ligger någon död kod i js filen samt kolla så att det inte är något knasigt css som jobbar mot varandra. bootstrap vs style.css
 
 let storeItems = [];
 
