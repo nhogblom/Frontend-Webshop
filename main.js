@@ -6,7 +6,7 @@ let storeItems = [];
 const clearCartButton = document.querySelector("#clearCart");
 const burgerMenuButton = document.querySelector("#burgerFilterIcon");
 const smallScreenMenu = document.querySelector("#smallDeviceFilterMenu");
-const checkoutForm = document.getElementById("checkoutForm");
+const checkoutForm = document.querySelector("#checkoutForm");
 const checkoutFields = checkoutForm.querySelectorAll(".form-control");
 
 // ################################################
@@ -156,12 +156,12 @@ function handleAddToCart(button, itemId) {
 
 function renderCart() {
   const cart = getCart();
-  const cartItemsContainer = document.getElementById("cartItems");
-  const cartButton = document.getElementById("cartButton");
-  const cartIcon = document.getElementById("cartIcon");
-  const cartCount = document.getElementById("cartCount");
-  const checkoutButton = document.getElementById("goToCheckout");
-  const cartTotalContainer = document.getElementById("cartTotal");
+  const cartItemsContainer = document.querySelector("#cartItems");
+  const cartButton = document.querySelector("#cartButton");
+  const cartIcon = document.querySelector("#cartIcon");
+  const cartCount = document.querySelector("#cartCount");
+  const checkoutButton = document.querySelector("#goToCheckout");
+  const cartTotalContainer = document.querySelector("#cartTotal");
 
   if (cart.length === 0) {
     // sätt default värden om varukorgen är tom.
@@ -301,13 +301,13 @@ function submitOrder(e) {
   // validera hela formuläret manuellt, och om det är giltigt, visa bekräftelsemodalen med en bekräftelsemeddelande som innehåller kundens email. Stäng sedan bekräftelsemodalen efter 6 sekunder.
   if (manuallyValidateAllInputFields()) {
     checkoutModal.hide();
-    const checkoutOrderModal = document.getElementById(
-      "orderConfirmationModal",
+    const checkoutOrderModal = document.querySelector(
+      "#orderConfirmationModal",
     );
     const orderConfirmationModal =
       bootstrap.Modal.getOrCreateInstance(checkoutOrderModal);
-    const orderConfirmationMessage = document.getElementById(
-      "orderConfirmationMessage",
+    const orderConfirmationMessage = document.querySelector(
+      "#orderConfirmationMessage",
     );
     const email = document.querySelector('input[type="email"]').value;
     orderConfirmationMessage.innerHTML = `
