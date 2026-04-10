@@ -29,6 +29,11 @@ function renderProductCards(items, category = "all") {
   });
 }
 
+function renderError(message,error) {
+  const productContainer = document.querySelector(".products");
+  productContainer.innerHTML = `<div class="alert alert-warning" role="alert">${message}${error}</div>`;
+}
+
 // Skapar ett product card av ett items JSON värden.
 function productCardFromItem(item, productContainer) {
   const itemElement = document.createElement("div");
@@ -409,7 +414,8 @@ function getCategoriesAndCreateFilterMenu() {
         createFilterButtonDesktopMenu(category);
         createFilterLiMobileMenu(category);
       });
-    });
+    })
+    ;
 }
 
 // ################################################
@@ -484,6 +490,9 @@ fetch("https://fakestoreapi.com/products/")
     storeItems = items;
     renderProductCards(items);
     renderCart();
+  })
+  .catch((error) => {
+    renderError("Api anrop misslyckades, felmeddelande: ",error);
   });
 
 getCategoriesAndCreateFilterMenu();
